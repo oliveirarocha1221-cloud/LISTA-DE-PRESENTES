@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Casamento | Presentes</title>
+    <title>Nossa Lista de Presentes</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --ouro: #c5a059;
@@ -26,7 +25,7 @@
             align-items: center;
             text-align: center;
             position: relative;
-            background: url('casamento.jpeg') center/cover no-repeat fixed;
+            background: url('CASAMENTO.jpeg') center/cover no-repeat fixed;
         }
 
         .hero::before {
@@ -36,9 +35,9 @@
 
         .hero-content { position: relative; color: white; z-index: 2; padding: 20px; animation: fadeIn 2s ease; }
         .hero h1 { font-family: 'Great Vibes', cursive; font-size: clamp(3.5rem, 10vw, 7rem); margin: 0; }
-        .hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; letter-spacing: 4px; text-transform: uppercase; }
+        .hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 10px; }
 
-        /* NAVEGAÇÃO RÁPIDA */
+        /* NAVEGAÇÃO */
         .nav-categorias {
             position: sticky; top: 0; background: var(--glass); backdrop-filter: blur(10px);
             padding: 15px 0; display: flex; justify-content: center; gap: 15px;
@@ -52,12 +51,12 @@
         }
         .nav-link:hover { color: var(--ouro); }
 
-        /* CONTAINER DA LISTA */
+        /* CONTAINER E GRIDS */
         .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
-        .categoria-bloco { margin-bottom: 80px; }
         .categoria-titulo {
             font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ouro);
             text-align: center; margin-bottom: 40px; border-bottom: 1px solid #e0dcd0; padding-bottom: 15px;
+            margin-top: 60px;
         }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -68,7 +67,7 @@
             border: 1px solid #eee; transition: 0.4s ease; display: flex; flex-direction: column; justify-content: space-between;
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(197, 160, 89, 0.1); border-color: var(--ouro-claro); }
-        .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin: 0; font-weight: 600; }
+        .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin: 0; font-weight: 600; min-height: 3rem; display: flex; align-items: center; justify-content: center; }
         .cor-tag { font-size: 0.75rem; color: var(--ouro); text-transform: uppercase; margin-top: 8px; display: block; font-weight: 600; }
 
         /* BOTÕES */
@@ -78,7 +77,11 @@
             font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: 0.3s;
         }
         .btn:hover { background: var(--ouro); }
-        .confirmado { display: block; color: #27ae60; font-size: 0.85rem; margin-top: 15px; padding: 10px; background: #f9fffb; border: 1px solid #eef9f2; }
+        
+        .confirmado { 
+            margin-top: 15px; color: #27ae60; font-size: 0.85rem; padding: 10px; 
+            background: #f9fffb; border: 1px solid #eef9f2; font-weight: 600;
+        }
 
         /* MODAL */
         .modal {
@@ -88,7 +91,7 @@
         .modal-box { background: var(--creme); padding: 40px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--ouro); }
         input { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; text-align: center; font-family: 'Montserrat'; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -108,19 +111,17 @@
     <div class="modal" id="modal">
         <div class="modal-box">
             <h3 id="tituloModal" style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;">Item</h3>
-            <p id="obsModal" style="color: var(--ouro); font-size: 0.8rem;"></p>
-            <p style="font-size: 0.9rem;">Para confirmar, digite o seu nome:</p>
-            <input type="text" id="nome" placeholder="Nome Completo">
-            <button class="btn" style="width: 100%;" id="btnConfirmar" onclick="confirmar()">Confirmar Presente</button>
-            <p onclick="fechar()" style="cursor:pointer; margin-top:20px; color:gray; font-size: 0.7rem; text-transform: uppercase;">Cancelar</p>
+            <p style="font-size: 0.9rem;">Para confirmar o presente, digite seu nome:</p>
+            <input type="text" id="nomePessoa" placeholder="Nome Completo">
+            <button class="btn" style="width: 100%;" id="btnConfirmar" onclick="enviarEscolha()">Confirmar Escolha</button>
+            <p onclick="fecharModal()" style="cursor:pointer; margin-top:20px; color:gray; font-size: 0.7rem; text-transform: uppercase;">Cancelar</p>
         </div>
     </div>
 
     <script>
-        // SEU NOVO LINK ATUALIZADO
-        const scriptURL = 'https://script.google.com/macros/s/AKfycby1oQIleqcewD7Exbpf1hzjvVOg8184fgg1_9DNiJqEcoLrnQAD0ftbVT1O79z2N2ui/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzQ276kPj9CBiQSv5jbUi-DSEemEiCXPCJxPYAc42JVxbqAV_mZtwWseloXX-CzUcvE/exec';
 
-        const dadosPlanilha = {
+        const dadosItens = {
             "Cozinha": [
                 {n: "Açucareiro", c: "Branco"}, {n: "Afiador de facas", c: "Preto"}, {n: "Assadeiras antiaderentes (P/M/G)", c: ""},
                 {n: "Boleira de vidro", c: ""}, {n: "Batedor manual (fouet)", c: "Inox"}, {n: "Bowls inox (P/M/G)", c: "Inox"},
@@ -173,81 +174,80 @@
             ]
         };
 
-        const container = document.getElementById('lista-container');
-        const navMenu = document.getElementById('nav-menu');
-        let atualId = "";
-        let itemNomeGlobal = "";
+        let itemSelecionado = "";
+        let idSelecionado = "";
 
-        for (const [cat, itens] of Object.entries(dadosPlanilha)) {
-            navMenu.innerHTML += `<a href="#${cat}" class="nav-link">${cat}</a>`;
-            let catHTML = `<section id="${cat}" class="categoria-bloco"><h2 class="categoria-titulo">${cat}</h2><div class="grid">`;
-            
-            itens.forEach((item, index) => {
-                const itemId = `item-${cat.replace(/[^a-zA-Z]/g, '')}-${index}`;
-                const jaEscolhido = item.dono ? `<div class="confirmado">✓ Por: ${item.dono}</div>` : '';
-                const botao = item.dono ? '' : `<button class="btn" onclick="abrirModal('${item.n.replace(/'/g, "\\'")}','${itemId}', '${item.c}')">Oferecer</button>`;
-                
-                catHTML += `
-                    <div class="card" id="${itemId}">
-                        <div><h3>${item.n}</h3><span class="cor-tag">${item.c}</span></div>
-                        ${botao}
-                        ${jaEscolhido}
-                        <div class="confirmado" style="display:none"></div>
-                    </div>`;
-            });
-            catHTML += `</div></section>`;
-            container.innerHTML += catHTML;
+        async function carregarDadosPlanilha() {
+            try {
+                const response = await fetch(scriptURL);
+                const escolhidos = await response.json();
+                renderizarInterface(escolhidos);
+            } catch (e) {
+                renderizarInterface({});
+            }
         }
 
-        function abrirModal(nome, id, cor) {
-            atualId = id; itemNomeGlobal = nome;
-            document.getElementById("modal").style.display = "flex";
-            document.getElementById("tituloModal").innerText = nome;
-            document.getElementById("obsModal").innerText = cor ? "Cor/Obs: " + cor : "";
+        function renderizarInterface(escolhidosDaPlanilha) {
+            const container = document.getElementById('lista-container');
+            const menu = document.getElementById('nav-menu');
+            container.innerHTML = ""; menu.innerHTML = "";
+
+            for (const [cat, itens] of Object.entries(dadosItens)) {
+                menu.innerHTML += `<a href="#${cat}" class="nav-link">${cat}</a>`;
+                let html = `<section id="${cat}"><h2 class="categoria-titulo">${cat}</h2><div class="grid">`;
+                
+                itens.forEach((item, idx) => {
+                    const id = `item-${cat.replace(/\s/g, '')}-${idx}`;
+                    const quemDeu = item.dono || escolhidosDaPlanilha[item.n];
+                    
+                    html += `
+                        <div class="card" id="${id}">
+                            <div>
+                                <h3>${item.n}</h3>
+                                <span class="cor-tag">${item.c}</span>
+                            </div>
+                            ${quemDeu 
+                                ? `<div class="confirmado">✓ Escolhido por: ${quemDeu}</div>` 
+                                : `<button class="btn" onclick="abrirModal('${item.n}', '${id}')">Oferecer</button>`
+                            }
+                        </div>`;
+                });
+                container.innerHTML += html + `</div></section>`;
+            }
         }
 
-        function fechar() { document.getElementById("modal").style.display = "none"; }
-
-        function confirmar() {
-            const nomeInput = document.getElementById("nome").value;
-            if (!nomeInput) { alert("Por favor, digite o seu nome"); return; }
-            
-            const btn = document.getElementById("btnConfirmar");
-            btn.disabled = true; btn.innerText = "A guardar...";
-
-            // Criando o objeto para envio
-            const formData = new FormData();
-            formData.append("Item", itemNomeGlobal);
-            formData.append("Nome", nomeInput);
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(() => {
-                let card = document.getElementById(atualId);
-                const btnOriginal = card.querySelector(".btn");
-                if(btnOriginal) btnOriginal.style.display = "none";
-                
-                // Mostra a mensagem de sucesso no card
-                let msg = card.querySelector(".confirmado:not([style*='display: block'])");
-                if(!msg) msg = card.querySelectorAll(".confirmado")[card.querySelectorAll(".confirmado").length - 1];
-                msg.style.display = "block";
-                msg.innerHTML = `✓ Escolhido por: <strong>${nomeInput}</strong>`;
-                
-                setTimeout(fechar, 1000);
-            })
-            .catch(() => {
-                // Mesmo com erro de CORS, o Google costuma processar. 
-                // Se a planilha atualizar, o erro pode ser ignorado.
-                alert("Enviado com sucesso!");
-                fechar();
-            })
-            .finally(() => { 
-                btn.disabled = false; 
-                btn.innerText = "Confirmar Presente"; 
-            });
+        function abrirModal(nome, id) {
+            itemSelecionado = nome; idSelecionado = id;
+            document.getElementById('tituloModal').innerText = nome;
+            document.getElementById('modal').style.display = 'flex';
+            document.getElementById('nomePessoa').value = "";
         }
+
+        function fecharModal() { document.getElementById('modal').style.display = 'none'; }
+
+        async function enviarEscolha() {
+            const nome = document.getElementById('nomePessoa').value;
+            if(!nome || nome.length < 3) return alert("Por favor, digite seu nome.");
+
+            const btn = document.getElementById('btnConfirmar');
+            btn.innerText = "Sincronizando..."; btn.disabled = true;
+
+            const corpo = new URLSearchParams();
+            corpo.append("Item", itemSelecionado);
+            corpo.append("Nome", nome);
+
+            try {
+                await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: corpo });
+                const card = document.getElementById(idSelecionado);
+                card.innerHTML = `<div><h3>${itemSelecionado}</h3></div><div class="confirmado">✓ Escolhido por: ${nome}</div>`;
+                setTimeout(fecharModal, 1000);
+            } catch (e) {
+                alert("Erro ao salvar!");
+                btn.disabled = false; btn.innerText = "Confirmar Escolha";
+            }
+        }
+
+        carregarDadosPlanilha();
     </script>
 </body>
 </html>
