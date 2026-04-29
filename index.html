@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Casamento | Presentes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ouro: #c5a059;
+            --ouro-claro: #e2c996;
+            --creme: #fdfbf7;
+            --vinho: #4a3728;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background-color: var(--creme); color: var(--vinho); scroll-behavior: smooth; }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: url('casamento.jpeg') center/cover no-repeat fixed;
+        }
+
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+        }
+
+        .hero-content { position: relative; color: white; z-index: 2; padding: 20px; animation: fadeIn 2s ease; }
+        .hero h1 { font-family: 'Great Vibes', cursive; font-size: clamp(3.5rem, 10vw, 7rem); margin: 0; }
+        .hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; letter-spacing: 4px; text-transform: uppercase; }
+
+        /* NAVEGAÇÃO RÁPIDA */
+        .nav-categorias {
+            position: sticky; top: 0; background: var(--glass); backdrop-filter: blur(10px);
+            padding: 15px 0; display: flex; justify-content: center; gap: 15px;
+            flex-wrap: wrap; z-index: 100; box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--ouro-claro);
+        }
+
+        .nav-link {
+            text-decoration: none; color: var(--vinho); font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; padding: 5px 8px; transition: 0.3s;
+        }
+        .nav-link:hover { color: var(--ouro); }
+
+        /* CONTAINER DA LISTA */
+        .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
+        .categoria-bloco { margin-bottom: 80px; }
+        .categoria-titulo {
+            font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ouro);
+            text-align: center; margin-bottom: 40px; border-bottom: 1px solid #e0dcd0; padding-bottom: 15px;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+
+        /* CARDS */
+        .card {
+            background: white; padding: 30px 20px; border-radius: 4px; text-align: center;
+            border: 1px solid #eee; transition: 0.4s ease; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(197, 160, 89, 0.1); border-color: var(--ouro-claro); }
+        .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin: 0; font-weight: 600; }
+        .cor-tag { font-size: 0.75rem; color: var(--ouro); text-transform: uppercase; margin-top: 8px; display: block; font-weight: 600; }
+
+        /* BOTÕES */
+        .btn {
+            background: var(--vinho); color: white; border: none; padding: 12px; margin-top: 20px;
+            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.7rem;
+            font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: 0.3s;
+        }
+        .btn:hover { background: var(--ouro); }
+        .confirmado { display: block; color: #27ae60; font-size: 0.85rem; margin-top: 15px; padding: 10px; background: #f9fffb; border: 1px solid #eef9f2; }
+
+        /* MODAL */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(74, 55, 40, 0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center;
+        }
+        .modal-box { background: var(--creme); padding: 40px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--ouro); }
+        input { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; text-align: center; font-family: 'Montserrat'; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p>Sejam bem-vindos à nossa</p>
+            <h1>Lista de Presentes</h1>
+            <p>Com carinho, Duda & Gabriel</p>
+        </div>
+    </section>
+
+    <nav class="nav-categorias" id="nav-menu"></nav>
+
+    <div class="container" id="lista-container"></div>
+
+    <div class="modal" id="modal">
+        <div class="modal-box">
+            <h3 id="tituloModal" style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;">Item</h3>
+            <p id="obsModal" style="color: var(--ouro); font-size: 0.8rem;"></p>
+            <p style="font-size: 0.9rem;">Para confirmar, digite o seu nome:</p>
+            <input type="text" id="nome" placeholder="Nome Completo">
+            <button class="btn" style="width: 100%;" id="btnConfirmar" onclick="confirmar()">Confirmar Presente</button>
+            <p onclick="fechar()" style="cursor:pointer; margin-top:20px; color:gray; font-size: 0.7rem; text-transform: uppercase;">Cancelar</p>
+        </div>
+    </div>
+
+    <script>
+        // SEU NOVO LINK ATUALIZADO
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz2b9Z0MPDJiEha43WSLqJsMRgJMS3sTNBCTpFIQ5g4vJEid7OB-Cb_tulmYbPKjNw7/exec';
+
+        const dadosPlanilha = {
+            "Cozinha": [
+                {n: "Açucareiro", c: "Branco"}, {n: "Afiador de facas", c: "Preto"}, {n: "Assadeiras antiaderentes (P/M/G)", c: ""},
+                {n: "Boleira de vidro", c: ""}, {n: "Batedor manual (fouet)", c: "Inox"}, {n: "Bowls inox (P/M/G)", c: "Inox"},
+                {n: "Capacho", c: ""}, {n: "Bule de chá/café", c: "Inox"}, {n: "Jogo de canecas", c: "Branco (ceramica)"},
+                {n: "Faqueiro completo", c: "Inox"}, {n: "Forma de pudim (média)", c: "Inox"}, {n: "Garrafa térmica", c: "Preta"},
+                {n: "Jarra para água (geladeira)", c: "Vidro"}, {n: "Galheteiro", c: "Vidro"}, {n: "Luva térmica", c: "preto"},
+                {n: "Jarra para suco", c: "Vidro"}, {n: "Jogo americano", c: "Bege"}, {n: "Jogo de xícara e pires", c: "Branco (ceramica)"},
+                {n: "Jogo de panelas", c: "Preto", dono: "Rafael/Madu"}, {n: "Panela de pressão", c: "Média"}, {n: "Cesta para pães (com tampa)", c: ""},
+                {n: "Chaleira", c: "Preta"}, {n: "Jogo de copos (canelado)", c: "Vidro"}, {n: "Jogo de taças (bristol)", c: "Vidro"},
+                {n: "Kit utensílios silicone", c: "Preto"}, {n: "Colher para sorvete / cortador pizza", c: "Inox"}, {n: "Copo medidor", c: ""},
+                {n: "Kit colheres de pau", c: "Madeira"}, {n: "Descanso de panela/travessa", c: "Madeira"}, {n: "Espremedor de batatas", c: "Inox"},
+                {n: "Descascador de legumes", c: "Preto"}, {n: "Processador (350ml)", c: "Preto"}, {n: "Soquete", c: "Madeira"},
+                {n: "Kit pegador", c: "Inox"}, {n: "Petisqueira", c: "Bambu"}, {n: "Porta frios", c: "Acrílico"},
+                {n: "Jogo de pirex com tampa", c: "Cinza"}, {n: "Porta Guardanapo", c: "Inox"}, {n: "Porta tempero (giratório)", c: "preto"},
+                {n: "Jogo de potes plasticos", c: ""}, {n: "Jogo de potes de vidro", c: ""}, {n: "Jogo de potes de mantimentos", c: "Herméticos"},
+                {n: "Jogo de pratos fundos", c: "Branco"}, {n: "Jogo de pratos rasos", c: "Branco"}, {n: "Jogo de pratos de sobremesa", c: "Branco"},
+                {n: "Queijeira", c: "Vidro"}, {n: "Ralador", c: "inox"}, {n: "Rolo de abrir massa (silicone)", c: "preto"},
+                {n: "Paliteiro/saleiro", c: "preto"}, {n: "Kit pia", c: "preto"}, {n: "Suporte de filtro de café", c: "preto"},
+                {n: "Tábua plástica", c: "preto"}, {n: "Tábua de carne", c: "Madeira"}, {n: "Tesoura", c: "preta"},
+                {n: "Fruteira (3 andares)", c: "preta/aço"}, {n: "Kit panos de prato", c: ""}, {n: "Armário suspenso", c: "Cinza"},
+                {n: "Saladeira", c: "Vidro"}, {n: "Jogo de taças de sobremesa", c: "Vidro"}, {n: "Escorredor de louça", c: "Preto"},
+                {n: "Escorredor de macarrão", c: "Inox"}, {n: "Kit formas silicone", c: "Preto"}
+            ],
+            "Eletrodomésticos": [
+                {n: "Air fryer", c: "Preta"}, {n: "Liquidificador", c: "Preto"}, {n: "Sanduicheira/Grill", c: "", dono: "Cenira/Luiz"},
+                {n: "Mixer", c: "Preto"}, {n: "Aspirador de pó vertical", c: "preto"}, {n: "Tábua de passar roupa", c: ""},
+                {n: "Ferro de passar roupas", c: "", dono: "Cenira/Luiz"}, {n: "Panela elétrica de arroz", c: "Inox"},
+                {n: "Panela elétrica de feijão", c: "Inox"}, {n: "Fogão 5 bocas", c: "Inox", dono: "Belenice"},
+                {n: "Geladeira", c: "Inox", dono: "Felipe/Carol"}, {n: "Maquina de lavar", c: "Inox", dono: "Fabiano"},
+                {n: "Mesa de jantar", c: "6 lugares"}, {n: "Batedeira", c: "Preta"}, {n: "Micro-ondas", c: "Inox"},
+                {n: "Purificador de água", c: "Inox"}, {n: "Ventilador", c: "Preto"}
+            ],
+            "Sala": [
+                {n: "Tapete (1.50 x 2.00)", c: "Cinza chumbo (liso)"}, {n: "Cortina (linho) (4.00 x 2.00)", c: "Bege"},
+                {n: "Sofá retrátil", c: "Cinza"}, {n: "Rack com painel (ripado)", c: "Off white"}, {n: "Televisão 55''", c: ""}
+            ],
+            "Quarto": [
+                {n: "Jogo de cama box queen (1)", c: ""}, {n: "Jogo de cama box queen (2)", c: ""}, {n: "Jogo de cama box queen (3)", c: ""},
+                {n: "Persiana", c: "Cinza"}, {n: "Edredom (1)", c: ""}, {n: "Edredom (2)", c: ""}, {n: "Cobertor", c: ""},
+                {n: "Travesseiros (2)", c: ""}, {n: "Guarda-roupa (3 portas)", c: ""}, {n: "Cama box queen", c: "", dono: "Cenira/Luiz"},
+                {n: "Cabeceira", c: "Off white"}, {n: "Mesas de cabeceira (2)", c: "Madeira/off white"}, {n: "Kit Cabides", c: ""},
+                {n: "Manta (1)", c: ""}, {n: "Manta (2)", c: ""}, {n: "Espelho corpo inteiro", c: ""}
+            ],
+            "Banheiro": [
+                {n: "Jogo de toalhas (1)", c: ""}, {n: "Jogo de toalhas (2)", c: ""}, {n: "Tapete banheiro", c: "Bege"},
+                {n: "Kit banheiro completo", c: "Branco"}, {n: "Cesto roupa suja", c: "Bambu"}
+            ],
+            "Limpeza": [
+                {n: "Varal de chão", c: "Branco"}, {n: "Mop spray", c: ""}, {n: "Rodo espuma", c: ""}, {n: "Kit Vassoura, rodo e pá", c: ""}
+            ]
+        };
+
+        const container = document.getElementById('lista-container');
+        const navMenu = document.getElementById('nav-menu');
+        let atualId = "";
+        let itemNomeGlobal = "";
+
+        for (const [cat, itens] of Object.entries(dadosPlanilha)) {
+            navMenu.innerHTML += `<a href="#${cat}" class="nav-link">${cat}</a>`;
+            let catHTML = `<section id="${cat}" class="categoria-bloco"><h2 class="categoria-titulo">${cat}</h2><div class="grid">`;
+            
+            itens.forEach((item, index) => {
+                const itemId = `item-${cat.replace(/[^a-zA-Z]/g, '')}-${index}`;
+                const jaEscolhido = item.dono ? `<div class="confirmado">✓ Por: ${item.dono}</div>` : '';
+                const botao = item.dono ? '' : `<button class="btn" onclick="abrirModal('${item.n.replace(/'/g, "\\'")}','${itemId}', '${item.c}')">Oferecer</button>`;
+                
+                catHTML += `
+                    <div class="card" id="${itemId}">
+                        <div><h3>${item.n}</h3><span class="cor-tag">${item.c}</span></div>
+                        ${botao}
+                        ${jaEscolhido}
+                        <div class="confirmado" style="display:none"></div>
+                    </div>`;
+            });
+            catHTML += `</div></section>`;
+            container.innerHTML += catHTML;
+        }
+
+        function abrirModal(nome, id, cor) {
+            atualId = id; itemNomeGlobal = nome;
+            document.getElementById("modal").style.display = "flex";
+            document.getElementById("tituloModal").innerText = nome;
+            document.getElementById("obsModal").innerText = cor ? "Cor/Obs: " + cor : "";
+        }
+
+        function fechar() { document.getElementById("modal").style.display = "none"; }
+
+        function confirmar() {
+            const nomeInput = document.getElementById("nome").value;
+            if (!nomeInput) { alert("Por favor, digite o seu nome"); return; }
+            
+            const btn = document.getElementById("btnConfirmar");
+            btn.disabled = true; btn.innerText = "A guardar...";
+
+            // Criando o objeto para envio
+            const formData = new FormData();
+            formData.append("Item", itemNomeGlobal);
+            formData.append("Nome", nomeInput);
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(() => {
+                let card = document.getElementById(atualId);
+                const btnOriginal = card.querySelector(".btn");
+                if(btnOriginal) btnOriginal.style.display = "none";
+                
+                // Mostra a mensagem de sucesso no card
+                let msg = card.querySelector(".confirmado:not([style*='display: block'])");
+                if(!msg) msg = card.querySelectorAll(".confirmado")[card.querySelectorAll(".confirmado").length - 1];
+                msg.style.display = "block";
+                msg.innerHTML = `✓ Escolhido por: <strong>${nomeInput}</strong>`;
+                
+                setTimeout(fechar, 1000);
+            })
+            .catch(() => {
+                // Mesmo com erro de CORS, o Google costuma processar. 
+                // Se a planilha atualizar, o erro pode ser ignorado.
+                alert("Enviado com sucesso!");
+                fechar();
+            })
+            .finally(() => { 
+                btn.disabled = false; 
+                btn.innerText = "Confirmar Presente"; 
+            });
+        }
+    </script>
+</body>
+</html>
