@@ -19,14 +19,15 @@
 
         /* HERO SECTION */
         .hero {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            background: url('casamento.jpeg') center/cover no-repeat fixed;
-        }
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    /* Adicionei uma cor de fundo cinza caso a imagem demore */
+    background: #4a3728 url('casamento.jpeg') center/cover no-repeat fixed;
+}
 
         .hero::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -137,21 +138,22 @@
                 {n: "Kit pegador", c: "Inox"}, {n: "Petisqueira", c: "Bambu"}, {n: "Porta frios", c: "Acrílico"},
                 {n: "Jogo de pirex com tampa", c: "Cinza"}, {n: "Porta Guardanapo", c: "Inox"}, {n: "Porta tempero (giratório)", c: "preto"},
                 {n: "Jogo de potes plasticos", c: ""}, {n: "Jogo de potes de vidro", c: ""}, {n: "Jogo de potes de mantimentos", c: "Herméticos"},
-                {n: "Jogo de pratos fundos", c: "Branco"}, {n: "Jogo de pratos rasos", c: "Branco"}, {n: "Jogo de pratos de sobremesa", c: "Branco"},
                 {n: "Queijeira", c: "Vidro"}, {n: "Ralador", c: "inox"}, {n: "Rolo de abrir massa (silicone)", c: "preto"},
                 {n: "Paliteiro/saleiro", c: "preto"}, {n: "Kit pia", c: "preto"}, {n: "Suporte de filtro de café", c: "preto"},
                 {n: "Tábua plástica", c: "preto"}, {n: "Tábua de carne", c: "Madeira"}, {n: "Tesoura", c: "preta"},
                 {n: "Fruteira (3 andares)", c: "preta/aço"}, {n: "Kit panos de prato", c: ""}, {n: "Armário suspenso", c: "Cinza"},
                 {n: "Saladeira", c: "Vidro"}, {n: "Jogo de taças de sobremesa", c: "Vidro"}, {n: "Escorredor de louça", c: "Preto"},
-                {n: "Escorredor de macarrão", c: "Inox"}, {n: "Kit formas silicone", c: "Preto"}
+                {n: "Escorredor de macarrão", c: "Inox"}, {n: "Kit formas silicone", c: "Preto"},
+                {n: "Aparelho de jantar    (30 peças)", c: "branco"}
             ],
+        
             "Eletrodomésticos": [
                 {n: "Air fryer", c: "Preta"}, {n: "Liquidificador", c: "Preto"}, {n: "Sanduicheira/Grill", c: "", dono: "Cenira/Luiz"},
                 {n: "Mixer", c: "Preto"}, {n: "Aspirador de pó vertical", c: "preto"}, {n: "Tábua de passar roupa", c: ""},
                 {n: "Ferro de passar roupas", c: "", dono: "Cenira/Luiz"}, {n: "Panela elétrica de arroz", c: "Inox"},
                 {n: "Panela elétrica de feijão", c: "Inox"}, {n: "Fogão 5 bocas", c: "Inox", dono: "Belenice"},
                 {n: "Geladeira", c: "Inox", dono: "Felipe/Carol"}, {n: "Maquina de lavar", c: "Inox", dono: "Fabiano"},
-                {n: "Mesa de jantar", c: "6 lugares"}, {n: "Batedeira", c: "Preta"}, {n: "Micro-ondas", c: "Inox"},
+                {n: "Mesa de jantar", c: "4 lugares"}, {n: "Batedeira", c: "Preta"}, {n: "Micro-ondas", c: "Inox"},
                 {n: "Purificador de água", c: "Inox"}, {n: "Ventilador", c: "Preto"}
             ],
             "Sala": [
