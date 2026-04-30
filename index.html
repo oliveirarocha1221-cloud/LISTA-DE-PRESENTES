@@ -26,7 +26,8 @@
     text-align: center;
     position: relative;
     /* Adicionei uma cor de fundo cinza caso a imagem demore */
-    background: #4a3728 url('casamento.jpeg') center/cover no-repeat fixed;
+   background: #4a3728 url('casamento.jpeg') center/cover no-repeat;
+background-attachment: scroll;
 }
 
         .hero::before {
@@ -210,7 +211,7 @@
                             </div>
                             ${quemDeu 
                                 ? `<div class="confirmado">✓ Escolhido por: ${quemDeu}</div>` 
-                                : `<button class="btn" onclick="abrirModal('${item.n}', '${id}')">Oferecer</button>`
+                                : `<button class="btn" onclick="abrirModal('${item.n}', '${id}')">Presentear</button>`
                             }
                         </div>`;
                 });
