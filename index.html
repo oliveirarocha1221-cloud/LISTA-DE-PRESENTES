@@ -229,27 +229,54 @@ background-attachment: scroll;
         function fecharModal() { document.getElementById('modal').style.display = 'none'; }
 
         async function enviarEscolha() {
-            const nome = document.getElementById('nomePessoa').value;
-            if(!nome || nome.length < 3) return alert("Por favor, digite seu nome.");
+    const nomeInput = document.getElementById('nomePessoa');
+    const nome = nomeInput.value.trim();
+    
+    if(!nome || nome.length < 3) {
+        return alert("Por favor, digite seu nome completo.");
+    }
 
-            const btn = document.getElementById('btnConfirmar');
-            btn.innerText = "Sincronizando..."; btn.disabled = true;
+    const btn = document.getElementById('btnConfirmar');
+    const originalText = btn.innerText;
+    
+    // 1. Feedback visual imediato no botão
+    btn.innerText = "Confirmado! 🎉";
+    btn.style.background = "#27ae60";
+    btn.disabled = true;
 
-            const corpo = new URLSearchParams();
-            corpo.append("Item", itemSelecionado);
-            corpo.append("Nome", nome);
+    // 2. Preparar os dados
+    const corpo = new URLSearchParams();
+    corpo.append("Item", itemSelecionado);
+    corpo.append("Nome", nome);
 
-            try {
-                await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: corpo });
-                const card = document.getElementById(idSelecionado);
-                card.innerHTML = `<div><h3>${itemSelecionado}</h3></div><div class="confirmado">✓ Escolhido por: ${nome}</div>`;
-                setTimeout(fecharModal, 1000);
-            } catch (e) {
-                alert("Erro ao salvar!");
-                btn.disabled = false; btn.innerText = "Confirmar Escolha";
-            }
-        }
+    // 3. Atualização Otimista: Atualiza o card e fecha o modal NA HORA
+    const card = document.getElementById(idSelecionado);
+    if (card) {
+        card.innerHTML = `
+            <div>
+                <h3>${itemSelecionado}</h3>
+            </div>
+            <div class="confirmado" style="animation: fadeIn 0.5s ease;">
+                ✓ Escolhido por: ${nome}
+            </div>`;
+    }
 
+    // Fecha o modal quase instantaneamente para parecer veloz
+    setTimeout(fecharModal, 600);
+
+    // 4. Envia para o Google em segundo plano (sem travar o usuário)
+    try {
+        fetch(scriptURL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: corpo,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+        // Não usamos 'await' aqui para não travar a UI esperando o Google responder
+    } catch (e) {
+        console.error("Erro ao sincronizar em segundo plano:", e);
+    }
+}
         carregarDadosPlanilha();
     </script>
 </body>
